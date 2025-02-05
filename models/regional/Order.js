@@ -2,10 +2,11 @@ const sql = require('mssql');
 const { regionalConfigs } = require('../../config/database');
 
 class Order {
-  static async getAll() {
+  static async getAll(limit = 10, offset = 0) {
     try {
-      const pool = await sql.connect(regionalConfigs.north); // Hoặc south tùy theo chi nhánh
-      const result = await pool.request().query('SELECT * FROM DonHang');
+      const pool = await sql.connect(regionalConfigs.north);
+      const result = await pool.request()
+        .query(`SELECT * FROM DonHang ORDER BY MaDH OFFSET ${offset} ROWS FETCH NEXT ${limit} ROWS ONLY`);
       return result.recordset;
     } catch (err) {
       throw err;
@@ -28,7 +29,7 @@ class Order {
     try {
       const pool = await sql.connect(regionalConfigs.north);
       const { MaKH, MaNV, NgayDatHang, MaNVC, TenNguoiNhan, DiaChiNhan, ThanhPhoNhan, MaCN } = order;
-      const result = await pool.request()
+      await pool.request()
         .input('MaKH', sql.NChar(250), MaKH)
         .input('MaNV', sql.Int, MaNV)
         .input('NgayDatHang', sql.DateTime, NgayDatHang)
@@ -38,7 +39,6 @@ class Order {
         .input('ThanhPhoNhan', sql.NVarChar(100), ThanhPhoNhan)
         .input('MaCN', sql.Int, MaCN)
         .query('INSERT INTO DonHang (MaKH, MaNV, NgayDatHang, MaNVC, TenNguoiNhan, DiaChiNhan, ThanhPhoNhan, MaCN) VALUES (@MaKH, @MaNV, @NgayDatHang, @MaNVC, @TenNguoiNhan, @DiaChiNhan, @ThanhPhoNhan, @MaCN)');
-      return result;
     } catch (err) {
       throw err;
     }

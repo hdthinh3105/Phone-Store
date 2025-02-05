@@ -21,10 +21,11 @@ router.put('/employees/:id', EmployeeController.update);
 router.delete('/employees/:id', EmployeeController.delete);
 
 // Order routes
-router.post('/orders', OrderController.create);
-router.get('/orders/:id', OrderController.getById);
-router.put('/orders/:id', OrderController.update);
-router.get('/orders/history', OrderController.getOrderHistory);
+router.get('/orders', OrderController.getAll); // Lấy tất cả đơn hàng
+router.get('/orders/:id', OrderController.getById); // Lấy đơn hàng theo ID
+router.post('/orders', OrderController.create); // Tạo đơn hàng mới
+router.put('/orders/:id', OrderController.update); // Cập nhật đơn hàng
+router.delete('/orders/:id', OrderController.delete); // Xóa đơn hàng
 
 // Order Detail routes
 router.get('/orders/:orderId/details', OrderDetailController.getByOrderId);
