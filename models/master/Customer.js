@@ -5,7 +5,7 @@ class Customer {
   static async getAll() {
     try {
       const pool = await sql.connect(masterConfig);
-      const result = await pool.request().query('SELECT * FROM KhachHang');
+      const result = await pool.request().query('SELECT * FROM TrungTam.dbo.KhachHang');
       return result.recordset;
     } catch (err) {
       throw err;
@@ -17,7 +17,7 @@ class Customer {
       const pool = await sql.connect(masterConfig);
       const result = await pool.request()
         .input('MaKH', sql.NChar(250), id)
-        .query('SELECT * FROM KhachHang WHERE MaKH = @MaKH');
+        .query('SELECT * FROM TrungTam.dbo.KhachHang WHERE MaKH = @MaKH');
       return result.recordset[0];
     } catch (err) {
       throw err;
@@ -37,7 +37,7 @@ class Customer {
         .input('ThanhPho', sql.NVarChar(15), ThanhPho)
         .input('Mien', sql.NVarChar(15), Mien)
         .input('SoDienThoai', sql.NVarChar(24), SoDienThoai)
-        .query('INSERT INTO KhachHang (MaKH, TenKH, NgaySinh, GioiTinh, DiaChi, ThanhPho, Mien, SoDienThoai) VALUES (@MaKH, @TenKH, @NgaySinh, @GioiTinh, @DiaChi, @ThanhPho, @Mien, @SoDienThoai)');
+        .query('INSERT INTO TrungTam.dbo.KhachHang (MaKH, TenKH, NgaySinh, GioiTinh, DiaChi, ThanhPho, Mien, SoDienThoai) VALUES (@MaKH, @TenKH, @NgaySinh, @GioiTinh, @DiaChi, @ThanhPho, @Mien, @SoDienThoai)');
     } catch (err) {
       throw err;
     }
@@ -56,7 +56,7 @@ class Customer {
         .input('ThanhPho', sql.NVarChar(15), ThanhPho)
         .input('Mien', sql.NVarChar(15), Mien)
         .input('SoDienThoai', sql.NVarChar(24), SoDienThoai)
-        .query('UPDATE KhachHang SET TenKH = @TenKH, NgaySinh = @NgaySinh, GioiTinh = @GioiTinh, DiaChi = @DiaChi, ThanhPho = @ThanhPho, Mien = @Mien, SoDienThoai = @SoDienThoai WHERE MaKH = @MaKH');
+        .query('UPDATE TrungTam.dbo.KhachHang SET TenKH = @TenKH, NgaySinh = @NgaySinh, GioiTinh = @GioiTinh, DiaChi = @DiaChi, ThanhPho = @ThanhPho, Mien = @Mien, SoDienThoai = @SoDienThoai WHERE MaKH = @MaKH');
     } catch (err) {
       throw err;
     }
@@ -67,7 +67,7 @@ class Customer {
       const pool = await sql.connect(masterConfig);
       await pool.request()
         .input('MaKH', sql.NChar(250), id)
-        .query('DELETE FROM KhachHang WHERE MaKH = @MaKH');
+        .query('DELETE FROM TrungTam.dbo.KhachHang WHERE MaKH = @MaKH');
     } catch (err) {
       throw err;
     }
@@ -78,7 +78,7 @@ class Customer {
       const pool = await sql.connect(masterConfig);
       const result = await pool.request()
         .input('keyword', sql.NVarChar(250), `%${keyword}%`)
-        .query('SELECT * FROM KhachHang WHERE TenKH LIKE @keyword');
+        .query('SELECT * FROM TrungTam.dbo.KhachHang WHERE TenKH LIKE @keyword');
       return result.recordset;
     } catch (err) {
       throw err;

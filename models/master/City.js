@@ -8,7 +8,7 @@ class City {
       const pool = await sql.connect(masterConfig);
       const result = await pool.request()
         .input('TenTP', sql.NVarChar, cityData.TenTP)
-        .query('INSERT INTO ThanhPho (TenTP) VALUES (@TenTP)');
+        .query('INSERT INTO TrungTam.dbo.ThanhPho (TenTP) VALUES (@TenTP)');
       return result;
     } catch (err) {
       throw new Error(err);
@@ -18,7 +18,7 @@ class City {
   static async getAllCities() {
     try {
       const pool = await sql.connect(masterConfig);
-      const result = await pool.request().query('SELECT * FROM ThanhPho');
+      const result = await pool.request().query('SELECT * FROM TrungTam.dbo.ThanhPho');
       return result.recordset;
     } catch (err) {
       throw new Error(err);
@@ -30,7 +30,7 @@ class City {
       const pool = await sql.connect(masterConfig);
       const result = await pool.request()
         .input('MaTP', sql.Int, cityId)
-        .query('SELECT * FROM ThanhPho WHERE MaTP = @MaTP');
+        .query('SELECT * FROM TrungTam.dbo.ThanhPho WHERE MaTP = @MaTP');
       return result.recordset[0];
     } catch (err) {
       throw new Error(err);
@@ -43,7 +43,7 @@ class City {
       const result = await pool.request()
         .input('MaTP', sql.Int, cityId)
         .input('TenTP', sql.NVarChar, cityData.TenTP)
-        .query('UPDATE ThanhPho SET TenTP = @TenTP WHERE MaTP = @MaTP');
+        .query('UPDATE TrungTam.dbo.ThanhPho SET TenTP = @TenTP WHERE MaTP = @MaTP');
       return result;
     } catch (err) {
       throw new Error(err);
@@ -55,7 +55,7 @@ class City {
       const pool = await sql.connect(masterConfig);
       const result = await pool.request()
         .input('MaTP', sql.Int, cityId)
-        .query('DELETE FROM ThanhPho WHERE MaTP = @MaTP');
+        .query('DELETE FROM TrungTam.dbo.ThanhPho WHERE MaTP = @MaTP');
       return result;
     } catch (err) {
       throw new Error(err);
@@ -67,7 +67,7 @@ class City {
       const pool = await sql.connect(masterConfig);
       const result = await pool.request()
         .input('query', sql.NVarChar, `%${query}%`)
-        .query('SELECT * FROM ThanhPho WHERE TenTP LIKE @query');
+        .query('SELECT * FROM TrungTam.dbo.ThanhPho WHERE TenTP LIKE @query');
       return result.recordset;
     } catch (err) {
       throw new Error(err);

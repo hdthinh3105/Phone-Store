@@ -8,7 +8,7 @@ class Region {
       const pool = await sql.connect(masterConfig);
       const result = await pool.request()
         .input('TenVung', sql.NVarChar, regionData.TenVung)
-        .query('INSERT INTO VungMien (TenVung) VALUES (@TenVung)');
+        .query('INSERT INTO TrungTam.dbo.VungMien (TenVung) VALUES (@TenVung)');
       return result;
     } catch (err) {
       throw new Error(err);
@@ -18,7 +18,7 @@ class Region {
   static async getAllRegions() {
     try {
       const pool = await sql.connect(masterConfig);
-      const result = await pool.request().query('SELECT * FROM VungMien');
+      const result = await pool.request().query('SELECT * FROM TrungTam.dbo.VungMien');
       return result.recordset;
     } catch (err) {
       throw new Error(err);
@@ -30,7 +30,7 @@ class Region {
       const pool = await sql.connect(masterConfig);
       const result = await pool.request()
         .input('MaVung', sql.Int, regionId)
-        .query('SELECT * FROM VungMien WHERE MaVung = @MaVung');
+        .query('SELECT * FROM TrungTam.dbo.VungMien WHERE MaVung = @MaVung');
       return result.recordset[0];
     } catch (err) {
       throw new Error(err);
@@ -43,7 +43,7 @@ class Region {
       const result = await pool.request()
         .input('MaVung', sql.Int, regionId)
         .input('TenVung', sql.NVarChar, regionData.TenVung)
-        .query('UPDATE VungMien SET TenVung = @TenVung WHERE MaVung = @MaVung');
+        .query('UPDATE TrungTam.dbo.VungMien SET TenVung = @TenVung WHERE MaVung = @MaVung');
       return result;
     } catch (err) {
       throw new Error(err);
@@ -55,7 +55,7 @@ class Region {
       const pool = await sql.connect(masterConfig);
       const result = await pool.request()
         .input('MaVung', sql.Int, regionId)
-        .query('DELETE FROM VungMien WHERE MaVung = @MaVung');
+        .query('DELETE FROM TrungTam.dbo.VungMien WHERE MaVung = @MaVung');
       return result;
     } catch (err) {
       throw new Error(err);
@@ -67,7 +67,7 @@ class Region {
       const pool = await sql.connect(masterConfig);
       const result = await pool.request()
         .input('query', sql.NVarChar, `%${query}%`)
-        .query('SELECT * FROM VungMien WHERE TenVung LIKE @query');
+        .query('SELECT * FROM TrungTam.dbo.VungMien WHERE TenVung LIKE @query');
       return result.recordset;
     } catch (err) {
       throw new Error(err);

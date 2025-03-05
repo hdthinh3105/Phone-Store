@@ -5,7 +5,7 @@ class Supplier {
   static async getAll() {
     try {
       const pool = await sql.connect(masterConfig);
-      const result = await pool.request().query('SELECT * FROM NhaCungCap');
+      const result = await pool.request().query('SELECT * FROM TrungTam.dbo.NhaCungCap');
       return result.recordset;
     } catch (err) {
       throw err;
@@ -17,7 +17,7 @@ class Supplier {
       const pool = await sql.connect(masterConfig);
       const result = await pool.request()
         .input('MaNCC', sql.Int, id)
-        .query('SELECT * FROM NhaCungCap WHERE MaNCC = @MaNCC');
+        .query('SELECT * FROM TrungTam.dbo.NhaCungCap WHERE MaNCC = @MaNCC');
       return result.recordset[0];
     } catch (err) {
       throw err;
@@ -38,7 +38,7 @@ class Supplier {
         .input('QuocGia', sql.NVarChar(15), QuocGia)
         .input('SoDienThoai', sql.NVarChar(24), SoDienThoai)
         .input('Fax', sql.NVarChar(24), Fax)
-        .query('INSERT INTO NhaCungCap (MaNCC, TenCongTy, DiaChi, ThanhPho, Mien, MaBuuChinh, QuocGia, SoDienThoai, Fax) VALUES (@MaNCC, @TenCongTy, @DiaChi, @ThanhPho, @Mien, @MaBuuChinh, @QuocGia, @SoDienThoai, @Fax)');
+        .query('INSERT INTO TrungTam.dbo.NhaCungCap (MaNCC, TenCongTy, DiaChi, ThanhPho, Mien, MaBuuChinh, QuocGia, SoDienThoai, Fax) VALUES (@MaNCC, @TenCongTy, @DiaChi, @ThanhPho, @Mien, @MaBuuChinh, @QuocGia, @SoDienThoai, @Fax)');
     } catch (err) {
       throw err;
     }
@@ -58,19 +58,18 @@ class Supplier {
         .input('QuocGia', sql.NVarChar(15), QuocGia)
         .input('SoDienThoai', sql.NVarChar(24), SoDienThoai)
         .input('Fax', sql.NVarChar(24), Fax)
-        .query('UPDATE NhaCungCap SET TenCongTy = @TenCongTy, DiaChi = @DiaChi, ThanhPho = @ThanhPho, Mien = @Mien, MaBuuChinh = @MaBuuChinh, QuocGia = @QuocGia, SoDienThoai = @SoDienThoai, Fax = @Fax WHERE MaNCC = @MaNCC');
+        .query('UPDATE TrungTam.dbo.NhaCungCap SET TenCongTy = @TenCongTy, DiaChi = @DiaChi, ThanhPho = @ThanhPho, Mien = @Mien, MaBuuChinh = @MaBuuChinh, QuocGia = @QuocGia, SoDienThoai = @SoDienThoai, Fax = @Fax WHERE MaNCC = @MaNCC');
     } catch (err) {
       throw err;
     }
   }
-
 
   static async delete(id) {
     try {
       const pool = await sql.connect(masterConfig);
       await pool.request()
         .input('MaNCC', sql.Int, id)
-        .query('DELETE FROM NhaCungCap WHERE MaNCC = @MaNCC');
+        .query('DELETE FROM TrungTam.dbo.NhaCungCap WHERE MaNCC = @MaNCC');
     } catch (err) {
       throw err;
     }
