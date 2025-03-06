@@ -2,28 +2,28 @@ const Order = require('../../models/regional/Order');
 
 class OrderService {
   // Tạo đơn hàng mới
-  static async createOrder(order) {
-    await Order.create(order);
+  static async createOrder(order, region = 'north') {
+    await Order.create(order, region);
   }
 
   // Lấy thông tin đơn hàng theo ID
-  static async getOrderById(id) {
-    return await Order.getById(id);
+  static async getOrderById(id, region = 'north') {
+    return await Order.getById(id, region);
   }
 
   // Lấy tất cả đơn hàng
-  static async getAllOrders(limit = 10, offset = 0) {
-    return await Order.getAll(limit, offset);
+  static async getAllOrders(limit = 10, offset = 0, region = 'north') {
+    return await Order.getAll(limit, offset, region);
   }
 
   // Cập nhật trạng thái đơn hàng
-  static async updateOrderStatus(id, orderData) {
-    await Order.update(id, orderData);
+  static async updateOrderStatus(id, orderData, region = 'north') {
+    await Order.update(id, orderData, region);
   }
 
   // Xóa đơn hàng
-  static async deleteOrder(id) {
-    await Order.delete(id);
+  static async deleteOrder(id, region = 'north') {
+    await Order.delete(id, region);
   }
 
   // Lấy lịch sử đơn hàng

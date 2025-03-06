@@ -1,16 +1,16 @@
 const Statistics = require('../../models/regional/Statistics');
 
 class StatisticsService {
-  static async getSalesStatistics() {
-    return await Statistics.getSalesData();
+  static async getSalesStatistics(region = 'north') {
+    return await Statistics.getSalesData(region);
   }
 
-  static async getCustomerStatistics() {
-    return await Statistics.getCustomerData();
+  static async getCustomerStatistics(region = 'north') {
+    return await Statistics.getCustomerData(region);
   }
 
-  static async getProductStatistics() {
-    return await Statistics.getProductData();
+  static async getProductStatistics(region = 'north') {
+    return await Statistics.getProductData(region);
   }
 }
 
