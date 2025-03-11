@@ -1,40 +1,63 @@
-const sql = require('mssql');
+const sql = require('mssql/msnodesqlv8');
 
 // Cấu hình kết nối SQL Server cho Trung Tâm
 const masterConfig = {
-  user: process.env.DB_MASTER_USER || 'sa',
-  password: process.env.DB_MASTER_PASSWORD || '12345',
-  server: process.env.DB_MASTER_SERVER || 'DESKTOP-N48D41B',
-  database: 'TrungTam',
+  connectionString:
+    "Driver={ODBC Driver 17 for SQL Server};" +
+    "Server=KENJU\\MSSQLSERVER123;" +
+    "Database=TrungTam;" +
+    "Uid=sa;" +
+    "Pwd=123;",
   options: {
     encrypt: true,
-    trustServerCertificate: true,
-    instanceName: process.env.DB_MASTER_INSTANCE_NAME || 'MSSQLSERVER2'
+    trustServerCertificate: true
   }
 };
+
+async function testConnection() {
+  try {
+    console.log('🔄 Đang thử kết nối...');
+
+    // Kết nối tới SQL Server với connectionString
+    const pool = await sql.connect(masterConfig);
+
+    console.log('✅ Kết nối thành công đến database:', 'TrungTam');
+
+    // Đóng kết nối sau khi kiểm tra xong
+    await pool.close(); 
+
+  } catch (error) {
+    console.error('❌ Lỗi kết nối:', error.message);
+  }
+}
+
+// Gọi hàm testConnection để bắt đầu kiểm tra kết nối
+testConnection();
 
 // Cấu hình kết nối cho các chi nhánh khu vực
 const regionalConfigs = {
   north: {
-    user: process.env.DB_NORTH_USER || 'sa',
-    password: process.env.DB_NORTH_PASSWORD || '12345',
-    server: process.env.DB_NORTH_SERVER || 'DESKTOP-N48D41B',
-    database: 'ChiNhanhBac',
+    connectionString:
+      "Driver={ODBC Driver 17 for SQL Server};" +
+      "Server=KENJU\\MSSQLSERVER123;" +
+      "Database=ChiNhanhBac;" +
+      "Uid=sa;" +
+      "Pwd=123;",
     options: {
       encrypt: true,
-      trustServerCertificate: true,
-      instanceName: process.env.DB_NORTH_INSTANCE_NAME || 'MSSQLSERVER2'
+      trustServerCertificate: true
     }
   },
   south: {
-    user: process.env.DB_SOUTH_USER || 'sa',
-    password: process.env.DB_SOUTH_PASSWORD || '12345',
-    server: process.env.DB_SOUTH_SERVER || 'DESKTOP-N48D41B',
-    database: 'ChiNhanhNam',
+    connectionString:
+      "Driver={ODBC Driver 17 for SQL Server};" +
+      "Server=KENJU\\MSSQLSERVER123;" +
+      "Database=ChiNhanhNam;" +
+      "Uid=sa;" +
+      "Pwd=123;",
     options: {
       encrypt: true,
-      trustServerCertificate: true,
-      instanceName: process.env.DB_SOUTH_INSTANCE_NAME || 'MSSQLSERVER2'
+      trustServerCertificate: true
     }
   }
 };
