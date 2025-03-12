@@ -22,11 +22,12 @@ router.delete('/customers/:id', CustomerController.delete);
 
 // Product routes
 router.get('/products', ProductController.getAll);
+router.get('/products/search', ProductController.search);
 router.get('/products/:id', ProductController.getById);
 router.post('/products', ProductController.create);
 router.put('/products/:id', ProductController.update);
 router.delete('/products/:id', ProductController.delete);
-router.get('/products/search', ProductController.search);
+
 
 // Shipper routes
 router.get('/shippers', ShipperController.getAll);

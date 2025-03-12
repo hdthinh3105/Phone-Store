@@ -3,7 +3,10 @@ node_modules/
 
 # Environment variables
 .env
+
+# Database configuration
 config/database.js
+
 # Log files
 *.log
 npm-debug.log

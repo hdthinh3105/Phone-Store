@@ -1,20 +1,20 @@
 const OrderDetail = require('../../models/regional/OrderDetail');
 
 class OrderDetailService {
-  static async getOrderDetailsByOrderId(orderId) {
-    return await OrderDetail.getByOrderId(orderId);
+  static async getOrderDetailsByOrderId(orderId, region = 'north') {
+    return await OrderDetail.getByOrderId(orderId, region);
   }
 
-  static async createOrderDetail(orderDetail) {
-    await OrderDetail.create(orderDetail);
+  static async createOrderDetail(orderDetail, region = 'north') {
+    await OrderDetail.create(orderDetail, region);
   }
 
-  static async updateOrderDetail(id, orderDetail) {
-    await OrderDetail.update(id, orderDetail);
+  static async updateOrderDetail(orderId, productId, orderDetail, region = 'north') {
+    await OrderDetail.update(orderId, productId, orderDetail, region);
   }
 
-  static async deleteOrderDetail(id) {
-    await OrderDetail.delete(id);
+  static async deleteOrderDetail(orderId, productId, region = 'north') {
+    await OrderDetail.delete(orderId, productId, region);
   }
 }
 
