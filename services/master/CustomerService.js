@@ -20,6 +20,10 @@ class CustomerService {
   static async deleteCustomer(id) {
     await Customer.delete(id);
   }
+
+  static async searchCustomers(keyword) {
+    return await Customer.search(keyword);
+  }
 }
 
 module.exports = CustomerService;

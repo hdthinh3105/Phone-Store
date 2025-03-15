@@ -48,6 +48,15 @@ class CustomerController {
       res.status(500).json({ message: err.message });
     }
   }
+
+  static async search(req, res) {
+    try {
+      const customers = await CustomerService.searchCustomers(req.query.q);
+      res.status(200).json(customers);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  }
 }
 
 module.exports = CustomerController;

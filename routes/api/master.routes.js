@@ -15,6 +15,7 @@ router.delete('/categories/:id', CategoryController.delete);
 
 // Customer routes
 router.get('/customers', CustomerController.getAll);
+router.get('/customers/search', CustomerController.search);
 router.get('/customers/:id', CustomerController.getById);
 router.post('/customers', CustomerController.create);
 router.put('/customers/:id', CustomerController.update);
