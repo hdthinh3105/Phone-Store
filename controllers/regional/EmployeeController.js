@@ -3,9 +3,13 @@ const EmployeeService = require('../../services/regional/EmployeeService');
 class EmployeeController {
   static async getAll(req, res) {
     try {
-      const employees = await EmployeeService.getAllEmployees();
+      console.log('Controller - Query params:', req.query);
+      const region = req.query.region || 'north';
+      console.log('Controller - Selected region:', region);
+      const employees = await EmployeeService.getAllEmployees(region);
       res.status(200).json(employees);
     } catch (err) {
+      console.error('Controller - Error:', err);
       res.status(500).json({ message: err.message });
     }
   }
