@@ -16,7 +16,8 @@ class EmployeeController {
 
   static async getById(req, res) {
     try {
-      const employee = await EmployeeService.getEmployeeById(req.params.id);
+      const region = req.query.region || 'north';
+      const employee = await EmployeeService.getEmployeeById(req.params.id, region);
       if (!employee) {
         return res.status(404).json({ message: 'Employee not found' });
       }
@@ -28,7 +29,11 @@ class EmployeeController {
 
   static async create(req, res) {
     try {
-      await EmployeeService.createEmployee(req.body);
+      const region = req.query.region || 'north';
+      // Đảm bảo MaCN đúng với region
+      const employee = req.body;
+      employee.MaCN = region === 'south' ? 2 : 1;
+      await EmployeeService.createEmployee(employee, region);
       res.status(201).json({ message: 'Employee created successfully' });
     } catch (err) {
       res.status(500).json({ message: err.message });
@@ -37,7 +42,11 @@ class EmployeeController {
 
   static async update(req, res) {
     try {
-      await EmployeeService.updateEmployee(req.params.id, req.body);
+      const region = req.query.region || 'north';
+      // Đảm bảo MaCN đúng với region
+      const employee = req.body;
+      employee.MaCN = region === 'south' ? 2 : 1;
+      await EmployeeService.updateEmployee(req.params.id, employee, region);
       res.status(200).json({ message: 'Employee updated successfully' });
     } catch (err) {
       res.status(500).json({ message: err.message });
@@ -46,7 +55,8 @@ class EmployeeController {
 
   static async delete(req, res) {
     try {
-      await EmployeeService.deleteEmployee(req.params.id);
+      const region = req.query.region || 'north';
+      await EmployeeService.deleteEmployee(req.params.id, region);
       res.status(200).json({ message: 'Employee deleted successfully' });
     } catch (err) {
       res.status(500).json({ message: err.message });

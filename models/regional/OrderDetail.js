@@ -108,6 +108,26 @@ class OrderDetail {
       }
     }
   }
+
+  static async getByOrderId(orderId, region = 'north') {
+    let pool;
+    try {
+      console.log('Model - Region:', region);
+      await sql.close();
+      pool = await sql.connect(regionalConfigs[region]);
+      const result = await pool.request()
+        .input('MaDH', sql.Int, orderId)
+        .query('SELECT * FROM ChiTietDonHang WHERE MaDH = @MaDH');
+      return result.recordset;
+    } catch (err) {
+      console.error('Error in getByOrderId:', err);
+      throw err;
+    } finally {
+      if (pool) {
+        await pool.close();
+      }
+    }
+  }
 }
 
 module.exports = OrderDetail;

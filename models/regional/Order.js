@@ -47,8 +47,9 @@ class Order {
       console.log('Model - Region:', region);
       await sql.close();
       pool = await sql.connect(regionalConfigs[region]);
-      const { MaKH, MaNV, NgayDatHang, MaNVC, TenNguoiNhan, DiaChiNhan, ThanhPhoNhan, MaCN } = order;
+      const { MaDH, MaKH, MaNV, NgayDatHang, MaNVC, TenNguoiNhan, DiaChiNhan, ThanhPhoNhan, MaCN } = order;
       await pool.request()
+        .input('MaDH', sql.Int, MaDH)
         .input('MaKH', sql.NChar(250), MaKH)
         .input('MaNV', sql.Int, MaNV)
         .input('NgayDatHang', sql.DateTime, NgayDatHang)
@@ -57,7 +58,7 @@ class Order {
         .input('DiaChiNhan', sql.NVarChar(250), DiaChiNhan)
         .input('ThanhPhoNhan', sql.NVarChar(100), ThanhPhoNhan)
         .input('MaCN', sql.Int, MaCN)
-        .query('INSERT INTO DonHang (MaKH, MaNV, NgayDatHang, MaNVC, TenNguoiNhan, DiaChiNhan, ThanhPhoNhan, MaCN) VALUES (@MaKH, @MaNV, @NgayDatHang, @MaNVC, @TenNguoiNhan, @DiaChiNhan, @ThanhPhoNhan, @MaCN)');
+        .query('INSERT INTO DonHang (MaDH, MaKH, MaNV, NgayDatHang, MaNVC, TenNguoiNhan, DiaChiNhan, ThanhPhoNhan, MaCN) VALUES (@MaDH, @MaKH, @MaNV, @NgayDatHang, @MaNVC, @TenNguoiNhan, @DiaChiNhan, @ThanhPhoNhan, @MaCN)');
     } catch (err) {
       console.error('Error in create:', err);
       throw err;
