@@ -1,0 +1,115 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      app-north-1:
+        condition: service_healthy
+      app-north-2:
+        condition: service_healthy
+      app-south-1:
+        condition: service_healthy
+      app-south-2:
+        condition: service_healthy
+      app-center:
+        condition: service_healthy
+    networks:
+      - app-network
+    restart: always
+
+  # Các instance cho miền Bắc
+  app-north-1:
+    build: .
+    environment:
+      - PORT=3001
+      - NODE_ENV=production
+      - REGION=north
+      - DB_CONFIG=ChiNhanhBac
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: always
+
+  app-north-2:
+    build: .
+    environment:
+      - PORT=3002
+      - NODE_ENV=production
+      - REGION=north
+      - DB_CONFIG=ChiNhanhBac
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3002/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: always
+
+  # Các instance cho miền Nam
+  app-south-1:
+    build: .
+    environment:
+      - PORT=3003
+      - NODE_ENV=production
+      - REGION=south
+      - DB_CONFIG=ChiNhanhNam
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3003/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: always
+
+  app-south-2:
+    build: .
+    environment:
+      - PORT=3004
+      - NODE_ENV=production
+      - REGION=south
+      - DB_CONFIG=ChiNhanhNam
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3004/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: always
+
+  # Instance cho Trung tâm
+  app-center:
+    build: .
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+      - REGION=center
+      - DB_CONFIG=TrungTam
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: always
+
+networks:
+  app-network:
+    driver: bridge 

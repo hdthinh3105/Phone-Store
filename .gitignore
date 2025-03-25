@@ -5,7 +5,7 @@ node_modules/
 .env
 test
 # Database configuration
-config/database.js
+config/database
 
 # Log files
 *.log

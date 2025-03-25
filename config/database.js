@@ -4,7 +4,7 @@ const sql = require('mssql');
 const masterConfig = {
   user: process.env.DB_MASTER_USER || 'sa',
   password: process.env.DB_MASTER_PASSWORD || '12345',
-  server: process.env.DB_MASTER_SERVER || 'DESKTOP-N48D41B',
+  server: process.env.DB_MASTER_SERVER || 'host.docker.internal',
   database: 'TrungTam',
   options: {
     encrypt: true,
@@ -18,7 +18,7 @@ const regionalConfigs = {
   north: {
     user: process.env.DB_NORTH_USER || 'sa',
     password: process.env.DB_NORTH_PASSWORD || '12345',
-    server: process.env.DB_NORTH_SERVER || 'DESKTOP-N48D41B',
+    server: process.env.DB_NORTH_SERVER || 'host.docker.internal',
     database: 'ChiNhanhBac',
     options: {
       encrypt: true,
@@ -29,7 +29,7 @@ const regionalConfigs = {
   south: {
     user: process.env.DB_SOUTH_USER || 'sa',
     password: process.env.DB_SOUTH_PASSWORD || '12345',
-    server: process.env.DB_SOUTH_SERVER || 'DESKTOP-N48D41B',
+    server: process.env.DB_SOUTH_SERVER || 'host.docker.internal',
     database: 'ChiNhanhNam',
     options: {
       encrypt: true,
