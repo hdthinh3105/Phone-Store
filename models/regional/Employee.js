@@ -13,7 +13,7 @@ class Employee {
       
       // Tạo kết nối mới
       pool = await sql.connect(regionalConfigs[region]);
-      const result = await pool.request().query('SELECT * FROM NhanVien');
+      const result = await pool.request().execute('sp_GetAllEmployees');
       return result.recordset;
     } catch (err) {
       console.error('Error in getAll:', err);
@@ -38,7 +38,7 @@ class Employee {
       pool = await sql.connect(regionalConfigs[region]);
       const result = await pool.request()
         .input('MaNV', sql.Int, id)
-        .query('SELECT * FROM NhanVien WHERE MaNV = @MaNV');
+        .execute('sp_GetEmployeeById');
       return result.recordset[0];
     } catch (err) {
       console.error('Error in getById:', err);
@@ -76,7 +76,7 @@ class Employee {
         .input('GhiChu', sql.NVarChar(sql.MAX), GhiChu)
         .input('QuanLy', sql.Int, QuanLy)
         .input('MaCN', sql.Int, MaCN)
-        .query('INSERT INTO NhanVien (MaNV, TenNV, ChucVu, GioiTinh, NgaySinh, NgayBatDauLamViec, DiaChi, ThanhPho, Mien, SoDienThoai, GhiChu, QuanLy, MaCN) VALUES (@MaNV, @TenNV, @ChucVu, @GioiTinh, @NgaySinh, @NgayBatDauLamViec, @DiaChi, @ThanhPho, @Mien, @SoDienThoai, @GhiChu, @QuanLy, @MaCN)');
+        .execute('sp_CreateEmployee');
     } catch (err) {
       console.error('Error in create:', err);
       throw err;
@@ -113,7 +113,7 @@ class Employee {
         .input('GhiChu', sql.NVarChar(sql.MAX), GhiChu)
         .input('QuanLy', sql.Int, QuanLy)
         .input('MaCN', sql.Int, MaCN)
-        .query('UPDATE NhanVien SET TenNV = @TenNV, ChucVu = @ChucVu, GioiTinh = @GioiTinh, NgaySinh = @NgaySinh, NgayBatDauLamViec = @NgayBatDauLamViec, DiaChi = @DiaChi, ThanhPho = @ThanhPho, Mien = @Mien, SoDienThoai = @SoDienThoai, GhiChu = @GhiChu, QuanLy = @QuanLy, MaCN = @MaCN WHERE MaNV = @MaNV');
+        .execute('sp_UpdateEmployee');
     } catch (err) {
       console.error('Error in update:', err);
       throw err;
@@ -137,7 +137,7 @@ class Employee {
       pool = await sql.connect(regionalConfigs[region]);
       await pool.request()
         .input('MaNV', sql.Int, id)
-        .query('DELETE FROM NhanVien WHERE MaNV = @MaNV');
+        .execute('sp_DeleteEmployee');
     } catch (err) {
       console.error('Error in delete:', err);
       throw err;

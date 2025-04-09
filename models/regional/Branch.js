@@ -8,7 +8,7 @@ class Branch {
       console.log('Model - Region:', region);
       await sql.close();
       pool = await sql.connect(regionalConfigs[region]);
-      const result = await pool.request().query('SELECT * FROM ChiNhanh');
+      const result = await pool.request().execute('sp_GetAllBranches');
       return result.recordset;
     } catch (err) {
       console.error('Error in getAll:', err);
@@ -28,7 +28,7 @@ class Branch {
       pool = await sql.connect(regionalConfigs[region]);
       const result = await pool.request()
         .input('MaCN', sql.Int, id)
-        .query('SELECT * FROM ChiNhanh WHERE MaCN = @MaCN');
+        .execute('sp_GetBranchById');
       return result.recordset[0];
     } catch (err) {
       console.error('Error in getById:', err);
@@ -54,7 +54,7 @@ class Branch {
         .input('ThanhPho', sql.NVarChar(100), ThanhPho)
         .input('Mien', sql.NVarChar(100), Mien)
         .input('SoDienThoai', sql.NVarChar(24), SoDienThoai)
-        .query('INSERT INTO ChiNhanh (MaCN, TenChiNhanh, DiaChi, ThanhPho, Mien, SoDienThoai) VALUES (@MaCN, @TenChiNhanh, @DiaChi, @ThanhPho, @Mien, @SoDienThoai)');
+        .execute('sp_CreateBranch');
     } catch (err) {
       console.error('Error in create:', err);
       throw err;
@@ -79,7 +79,7 @@ class Branch {
         .input('ThanhPho', sql.NVarChar(100), ThanhPho)
         .input('Mien', sql.NVarChar(100), Mien)
         .input('SoDienThoai', sql.NVarChar(24), SoDienThoai)
-        .query('UPDATE ChiNhanh SET TenChiNhanh = @TenChiNhanh, DiaChi = @DiaChi, ThanhPho = @ThanhPho, Mien = @Mien, SoDienThoai = @SoDienThoai WHERE MaCN = @MaCN');
+        .execute('sp_UpdateBranch');
     } catch (err) {
       console.error('Error in update:', err);
       throw err;
@@ -98,7 +98,7 @@ class Branch {
       pool = await sql.connect(regionalConfigs[region]);
       await pool.request()
         .input('MaCN', sql.Int, id)
-        .query('DELETE FROM ChiNhanh WHERE MaCN = @MaCN');
+        .execute('sp_DeleteBranch');
     } catch (err) {
       console.error('Error in delete:', err);
       throw err;

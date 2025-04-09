@@ -7,8 +7,10 @@ class City {
     try {
       const pool = await sql.connect(masterConfig);
       const result = await pool.request()
-        .input('TenTP', sql.NVarChar, cityData.TenTP)
-        .query('INSERT INTO TrungTam.dbo.ThanhPho (TenTP) VALUES (@TenTP)');
+        .input('MaTP', sql.NChar(20), cityData.MaTP)
+        .input('MoTa', sql.NChar(30), cityData.MoTa)
+        .input('MaVung', sql.Int, cityData.MaVung)
+        .execute('sp_CreateCity');
       return result;
     } catch (err) {
       throw new Error(err);
@@ -18,7 +20,7 @@ class City {
   static async getAllCities() {
     try {
       const pool = await sql.connect(masterConfig);
-      const result = await pool.request().query('SELECT * FROM TrungTam.dbo.ThanhPho');
+      const result = await pool.request().execute('sp_GetAllCities');
       return result.recordset;
     } catch (err) {
       throw new Error(err);
@@ -29,8 +31,8 @@ class City {
     try {
       const pool = await sql.connect(masterConfig);
       const result = await pool.request()
-        .input('MaTP', sql.Int, cityId)
-        .query('SELECT * FROM TrungTam.dbo.ThanhPho WHERE MaTP = @MaTP');
+        .input('MaTP', sql.NChar(20), cityId)
+        .execute('sp_GetCityById');
       return result.recordset[0];
     } catch (err) {
       throw new Error(err);
@@ -41,9 +43,10 @@ class City {
     try {
       const pool = await sql.connect(masterConfig);
       const result = await pool.request()
-        .input('MaTP', sql.Int, cityId)
-        .input('TenTP', sql.NVarChar, cityData.TenTP)
-        .query('UPDATE TrungTam.dbo.ThanhPho SET TenTP = @TenTP WHERE MaTP = @MaTP');
+        .input('MaTP', sql.NChar(20), cityId)
+        .input('MoTa', sql.NChar(30), cityData.MoTa)
+        .input('MaVung', sql.Int, cityData.MaVung)
+        .execute('sp_UpdateCity');
       return result;
     } catch (err) {
       throw new Error(err);
@@ -54,8 +57,8 @@ class City {
     try {
       const pool = await sql.connect(masterConfig);
       const result = await pool.request()
-        .input('MaTP', sql.Int, cityId)
-        .query('DELETE FROM TrungTam.dbo.ThanhPho WHERE MaTP = @MaTP');
+        .input('MaTP', sql.NChar(20), cityId)
+        .execute('sp_DeleteCity');
       return result;
     } catch (err) {
       throw new Error(err);
@@ -66,8 +69,8 @@ class City {
     try {
       const pool = await sql.connect(masterConfig);
       const result = await pool.request()
-        .input('query', sql.NVarChar, `%${query}%`)
-        .query('SELECT * FROM TrungTam.dbo.ThanhPho WHERE TenTP LIKE @query');
+        .input('query', sql.NVarChar(100), query)
+        .execute('sp_SearchCities');
       return result.recordset;
     } catch (err) {
       throw new Error(err);

@@ -5,7 +5,7 @@ class Product {
   static async getAll() {
     try {
       const pool = await sql.connect(masterConfig);
-      const result = await pool.request().query('SELECT * FROM TrungTam.dbo.SanPham');
+      const result = await pool.request().execute('sp_GetAllProducts');
       return result.recordset;
     } catch (err) {
       throw err;
@@ -17,7 +17,7 @@ class Product {
       const pool = await sql.connect(masterConfig);
       const result = await pool.request()
         .input('MaSP', sql.Int, id)
-        .query('SELECT * FROM TrungTam.dbo.SanPham WHERE MaSP = @MaSP');
+        .execute('sp_GetProductById');
       return result.recordset[0];
     } catch (err) {
       throw err;
@@ -38,7 +38,7 @@ class Product {
         .input('SoLuongDatMua', sql.SmallInt, SoLuongDatMua)
         .input('MucDatHangLai', sql.SmallInt, MucDatHangLai)
         .input('TrangThaiNgungBan', sql.Bit, TrangThaiNgungBan)
-        .query('INSERT INTO TrungTam.dbo.SanPham (MaSP, TenSP, MaNCC, MaLoaiSP, ThanhTien, SoLuongTonKho, SoLuongDatMua, MucDatHangLai, TrangThaiNgungBan) VALUES (@MaSP, @TenSP, @MaNCC, @MaLoaiSP, @ThanhTien, @SoLuongTonKho, @SoLuongDatMua, @MucDatHangLai, @TrangThaiNgungBan)');
+        .execute('sp_CreateProduct');
     } catch (err) {
       throw err;
     }
@@ -58,7 +58,7 @@ class Product {
         .input('SoLuongDatMua', sql.SmallInt, SoLuongDatMua)
         .input('MucDatHangLai', sql.SmallInt, MucDatHangLai)
         .input('TrangThaiNgungBan', sql.Bit, TrangThaiNgungBan)
-        .query('UPDATE TrungTam.dbo.SanPham SET TenSP = @TenSP, MaNCC = @MaNCC, MaLoaiSP = @MaLoaiSP, ThanhTien = @ThanhTien, SoLuongTonKho = @SoLuongTonKho, SoLuongDatMua = @SoLuongDatMua, MucDatHangLai = @MucDatHangLai, TrangThaiNgungBan = @TrangThaiNgungBan WHERE MaSP = @MaSP');
+        .execute('sp_UpdateProduct');
     } catch (err) {
       throw err;
     }
@@ -69,7 +69,7 @@ class Product {
       const pool = await sql.connect(masterConfig);
       await pool.request()
         .input('MaSP', sql.Int, id)
-        .query('DELETE FROM TrungTam.dbo.SanPham WHERE MaSP = @MaSP');
+        .execute('sp_DeleteProduct');
     } catch (err) {
       throw err;
     }
@@ -79,8 +79,8 @@ class Product {
     try {
       const pool = await sql.connect(masterConfig);
       const result = await pool.request()
-        .input('keyword', sql.NVarChar(250), `%${keyword}%`)
-        .query('SELECT * FROM TrungTam.dbo.SanPham WHERE TenSP LIKE @keyword');
+        .input('keyword', sql.NVarChar(250), keyword)
+        .execute('sp_SearchProducts');
       return result.recordset;
     } catch (err) {
       throw err;

@@ -9,7 +9,9 @@ class Order {
       await sql.close();
       pool = await sql.connect(regionalConfigs[region]);
       const result = await pool.request()
-        .query(`SELECT * FROM DonHang ORDER BY MaDH OFFSET ${offset} ROWS FETCH NEXT ${limit} ROWS ONLY`);
+        .input('Offset', sql.Int, offset)
+        .input('Limit', sql.Int, limit)
+        .execute('sp_GetAllOrders');
       return result.recordset;
     } catch (err) {
       console.error('Error in getAll:', err);
@@ -29,7 +31,7 @@ class Order {
       pool = await sql.connect(regionalConfigs[region]);
       const result = await pool.request()
         .input('MaDH', sql.Int, id)
-        .query('SELECT * FROM DonHang WHERE MaDH = @MaDH');
+        .execute('sp_GetOrderById');
       return result.recordset[0];
     } catch (err) {
       console.error('Error in getById:', err);
@@ -58,7 +60,7 @@ class Order {
         .input('DiaChiNhan', sql.NVarChar(250), DiaChiNhan)
         .input('ThanhPhoNhan', sql.NVarChar(100), ThanhPhoNhan)
         .input('MaCN', sql.Int, MaCN)
-        .query('INSERT INTO DonHang (MaDH, MaKH, MaNV, NgayDatHang, MaNVC, TenNguoiNhan, DiaChiNhan, ThanhPhoNhan, MaCN) VALUES (@MaDH, @MaKH, @MaNV, @NgayDatHang, @MaNVC, @TenNguoiNhan, @DiaChiNhan, @ThanhPhoNhan, @MaCN)');
+        .execute('sp_CreateOrder');
     } catch (err) {
       console.error('Error in create:', err);
       throw err;
@@ -86,7 +88,7 @@ class Order {
         .input('DiaChiNhan', sql.NVarChar(250), DiaChiNhan)
         .input('ThanhPhoNhan', sql.NVarChar(100), ThanhPhoNhan)
         .input('MaCN', sql.Int, MaCN)
-        .query('UPDATE DonHang SET MaKH = @MaKH, MaNV = @MaNV, NgayDatHang = @NgayDatHang, MaNVC = @MaNVC, TenNguoiNhan = @TenNguoiNhan, DiaChiNhan = @DiaChiNhan, ThanhPhoNhan = @ThanhPhoNhan, MaCN = @MaCN WHERE MaDH = @MaDH');
+        .execute('sp_UpdateOrder');
     } catch (err) {
       console.error('Error in update:', err);
       throw err;
@@ -105,7 +107,7 @@ class Order {
       pool = await sql.connect(regionalConfigs[region]);
       await pool.request()
         .input('MaDH', sql.Int, id)
-        .query('DELETE FROM DonHang WHERE MaDH = @MaDH');
+        .execute('sp_DeleteOrder');
     } catch (err) {
       console.error('Error in delete:', err);
       throw err;

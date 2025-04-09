@@ -5,7 +5,7 @@ class Category {
   static async getAll() {
     try {
       const pool = await sql.connect(masterConfig);
-      const result = await pool.request().query('SELECT * FROM TrungTam.dbo.LoaiSanPham');
+      const result = await pool.request().execute('sp_GetAllCategories');
       return result.recordset;
     } catch (err) {
       throw err;
@@ -17,7 +17,7 @@ class Category {
       const pool = await sql.connect(masterConfig);
       const result = await pool.request()
         .input('MaLoaiSP', sql.Int, id)
-        .query('SELECT * FROM TrungTam.dbo.LoaiSanPham WHERE MaLoaiSP = @MaLoaiSP');
+        .execute('sp_GetCategoryById');
       return result.recordset[0];
     } catch (err) {
       throw err;
@@ -32,7 +32,7 @@ class Category {
         .input('MaLoaiSP', sql.Int, MaLoaiSP)
         .input('TenLoaiSP', sql.NVarChar(15), TenLoaiSP)
         .input('MoTa', sql.NVarChar(sql.MAX), MoTa)
-        .query('INSERT INTO TrungTam.dbo.LoaiSanPham (MaLoaiSP, TenLoaiSP, MoTa) VALUES (@MaLoaiSP, @TenLoaiSP, @MoTa)');
+        .execute('sp_CreateCategory');
     } catch (err) {
       throw err;
     }
@@ -46,7 +46,7 @@ class Category {
         .input('MaLoaiSP', sql.Int, id)
         .input('TenLoaiSP', sql.NVarChar(15), TenLoaiSP)
         .input('MoTa', sql.NVarChar(sql.MAX), MoTa)
-        .query('UPDATE TrungTam.dbo.LoaiSanPham SET TenLoaiSP = @TenLoaiSP, MoTa = @MoTa WHERE MaLoaiSP = @MaLoaiSP');
+        .execute('sp_UpdateCategory');
     } catch (err) {
       throw err;
     }
@@ -57,7 +57,7 @@ class Category {
       const pool = await sql.connect(masterConfig);
       await pool.request()
         .input('MaLoaiSP', sql.Int, id)
-        .query('DELETE FROM TrungTam.dbo.LoaiSanPham WHERE MaLoaiSP = @MaLoaiSP');
+        .execute('sp_DeleteCategory');
     } catch (err) {
       throw err;
     }
@@ -67,8 +67,8 @@ class Category {
     try {
       const pool = await sql.connect(masterConfig);
       const result = await pool.request()
-        .input('keyword', sql.NVarChar(15), `%${keyword}%`)
-        .query('SELECT * FROM TrungTam.dbo.LoaiSanPham WHERE TenLoaiSP LIKE @keyword');
+        .input('keyword', sql.NVarChar(15), keyword)
+        .execute('sp_SearchCategories');
       return result.recordset;
     } catch (err) {
       throw err;

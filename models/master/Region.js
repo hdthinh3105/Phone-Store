@@ -7,8 +7,9 @@ class Region {
     try {
       const pool = await sql.connect(masterConfig);
       const result = await pool.request()
-        .input('TenVung', sql.NVarChar, regionData.TenVung)
-        .query('INSERT INTO TrungTam.dbo.VungMien (TenVung) VALUES (@TenVung)');
+        .input('MaVung', sql.Int, regionData.MaVung)
+        .input('MoTa', sql.NChar(30), regionData.MoTa)
+        .execute('sp_CreateRegion');
       return result;
     } catch (err) {
       throw new Error(err);
@@ -18,7 +19,7 @@ class Region {
   static async getAllRegions() {
     try {
       const pool = await sql.connect(masterConfig);
-      const result = await pool.request().query('SELECT * FROM TrungTam.dbo.VungMien');
+      const result = await pool.request().execute('sp_GetAllRegions');
       return result.recordset;
     } catch (err) {
       throw new Error(err);
@@ -30,7 +31,7 @@ class Region {
       const pool = await sql.connect(masterConfig);
       const result = await pool.request()
         .input('MaVung', sql.Int, regionId)
-        .query('SELECT * FROM TrungTam.dbo.VungMien WHERE MaVung = @MaVung');
+        .execute('sp_GetRegionById');
       return result.recordset[0];
     } catch (err) {
       throw new Error(err);
@@ -42,8 +43,8 @@ class Region {
       const pool = await sql.connect(masterConfig);
       const result = await pool.request()
         .input('MaVung', sql.Int, regionId)
-        .input('TenVung', sql.NVarChar, regionData.TenVung)
-        .query('UPDATE TrungTam.dbo.VungMien SET TenVung = @TenVung WHERE MaVung = @MaVung');
+        .input('MoTa', sql.NChar(30), regionData.MoTa)
+        .execute('sp_UpdateRegion');
       return result;
     } catch (err) {
       throw new Error(err);
@@ -55,7 +56,7 @@ class Region {
       const pool = await sql.connect(masterConfig);
       const result = await pool.request()
         .input('MaVung', sql.Int, regionId)
-        .query('DELETE FROM TrungTam.dbo.VungMien WHERE MaVung = @MaVung');
+        .execute('sp_DeleteRegion');
       return result;
     } catch (err) {
       throw new Error(err);
@@ -66,8 +67,8 @@ class Region {
     try {
       const pool = await sql.connect(masterConfig);
       const result = await pool.request()
-        .input('query', sql.NVarChar, `%${query}%`)
-        .query('SELECT * FROM TrungTam.dbo.VungMien WHERE TenVung LIKE @query');
+        .input('query', sql.NVarChar(100), query)
+        .execute('sp_SearchRegions');
       return result.recordset;
     } catch (err) {
       throw new Error(err);

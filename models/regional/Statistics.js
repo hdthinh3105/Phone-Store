@@ -9,7 +9,7 @@ class Statistics {
       console.log('Model - Region:', region);
       await sql.close();
       pool = await sql.connect(regionalConfigs[region]);
-      const result = await pool.request().query('SELECT * FROM SalesData');
+      const result = await pool.request().execute('sp_GetSalesData');
       return result.recordset;
     } catch (err) {
       console.error('Error in getSalesData:', err);
@@ -27,7 +27,7 @@ class Statistics {
       console.log('Model - Region:', region);
       await sql.close();
       pool = await sql.connect(regionalConfigs[region]);
-      const result = await pool.request().query('SELECT * FROM CustomerData');
+      const result = await pool.request().execute('sp_GetCustomerData');
       return result.recordset;
     } catch (err) {
       console.error('Error in getCustomerData:', err);
@@ -45,7 +45,7 @@ class Statistics {
       console.log('Model - Region:', region);
       await sql.close();
       pool = await sql.connect(regionalConfigs[region]);
-      const result = await pool.request().query('SELECT * FROM ProductData');
+      const result = await pool.request().execute('sp_GetProductData');
       return result.recordset;
     } catch (err) {
       console.error('Error in getProductData:', err);
