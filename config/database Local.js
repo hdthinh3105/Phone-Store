@@ -3,13 +3,13 @@ const sql = require('mssql');
 // Cấu hình kết nối SQL Server cho Trung Tâm
 const masterConfig = {
   user: process.env.DB_MASTER_USER || 'sa',
-  password: process.env.DB_MASTER_PASSWORD || '12345',
+  password: process.env.DB_MASTER_PASSWORD || '1234',
   server: process.env.DB_MASTER_SERVER || 'DESKTOP-N48D41B',
   database: 'TrungTam',
   options: {
     encrypt: true,
     trustServerCertificate: true,
-    instanceName: process.env.DB_MASTER_INSTANCE_NAME || 'MSSQLSERVER2'
+    instanceName: process.env.DB_MASTER_INSTANCE_NAME || 'MSSQLSERVER1'
   }
 };
 
@@ -28,13 +28,13 @@ const regionalConfigs = {
   },
   south: {
     user: process.env.DB_SOUTH_USER || 'sa',
-    password: process.env.DB_SOUTH_PASSWORD || '12345',
+    password: process.env.DB_SOUTH_PASSWORD || '123456',
     server: process.env.DB_SOUTH_SERVER || 'DESKTOP-N48D41B',
     database: 'ChiNhanhNam',
     options: {
       encrypt: true,
       trustServerCertificate: true,
-      instanceName: process.env.DB_SOUTH_INSTANCE_NAME || 'MSSQLSERVER2'
+      instanceName: process.env.DB_SOUTH_INSTANCE_NAME || 'MSSQLSERVER3'
     }
   }
 };

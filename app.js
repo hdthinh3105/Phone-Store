@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const apiRoutes = require('./routes/index');
 const os = require('os');
+const dashboardRoutes = require('./routes/dashboard');
 
 const app = express();
 
@@ -17,7 +18,8 @@ app.use((req, res, next) => {
   next();
 });
 
-// Routes
+// Routes - Đăng ký dashboardRoutes trước
+app.use('/api', dashboardRoutes);
 app.use('/api', apiRoutes);
 
 // Error handling middleware
